@@ -1,0 +1,45 @@
+version: "3.3"
+services:
+
+  fmw:
+    # image: store/oracle/fmw-infrastructure:12.2.1.2
+    build: fmw-infrastructure
+    container_name: InfraAdminContainer
+    volumes:
+      - $PWD/shared:/u01/oracle/user_projects
+    ports:
+      - "9001:7001"
+      - "7001:7001"
+    #  - "7003:7003"
+    networks:
+      InfraNET:
+    links:
+      - database
+    environment:
+      # adminhostname: InfraAdminContainer
+      # adminport: 7001
+      MANAGED_SERVER: "true"
+      DOMAIN_NAME: srb.europa.eu
+      CONNECTION_STRING: InfraDB:1521/InfraPDB1.srb.europa.eu
+      RCUPREFIX: INFRA7
+      DB_PASSWORD: Oradoc_db1
+      DB_USERNAME: sys
+      ADMIN_PASSWORD: Oradoc_db1
+      DB_SCHEMA_PASSWORD: Oradoc_db1
+
+  database:
+    image: store/oracle/database-enterprise:12.2.0.1
+    container_name: InfraDB
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    networks:
+      InfraNET:
+    environment:
+      DB_SID: InfraDB
+      DB_PDB: InfraPDB1
+      DB_DOMAIN: srb.europa.eu
+      DB_BUNDLE: basic
+
+networks:
+  InfraNET:
