@@ -1,7 +1,7 @@
 version: "3.3"
 services:
 
-  fmw:
+  weblogic:
     # image: store/oracle/fmw-infrastructure:12.2.1.2
     build: fmw-infrastructure
     container_name: InfraAdminContainer
@@ -14,13 +14,14 @@ services:
     networks:
       InfraNET:
     links:
-      - database
+      - database:InfraDB
     environment:
       # adminhostname: InfraAdminContainer
       # adminport: 7001
       MANAGED_SERVER: "true"
       DOMAIN_NAME: srb.europa.eu
       CONNECTION_STRING: InfraDB:1521/InfraPDB1.srb.europa.eu
+      #CONNECTION_STRING: InfraDB:1521/infrapdb1.srb.europa.eu
       RCUPREFIX: INFRA7
       DB_PASSWORD: Oradoc_db1
       DB_USERNAME: sys
