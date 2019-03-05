@@ -6,7 +6,7 @@ services:
     build: fmw-infrastructure
     container_name: InfraAdminContainer
     volumes:
-      - $PWD/shared:/u01/oracle/user_projects
+      - fmw-infrastructure:/u01/oracle/user_projects
     ports:
       - "9001:7001"
       - "7001:7001"
@@ -36,6 +36,11 @@ services:
       - "5500:5500"
     networks:
       InfraNET:
+    volumes:
+      - oracle-orainventory:/u01
+      - oracle-datafiles:/u02
+      - oracle-fra:/u03
+      - oracle-redulog:/u03
     environment:
       DB_SID: InfraDB
       DB_PDB: InfraPDB1
@@ -44,3 +49,10 @@ services:
 
 networks:
   InfraNET:
+
+volumes:
+  oracle-orainventory:
+  oracle-datafiles:
+  oracle-fra:
+  oracle-redulog:
+  fmw-infrastructure:
